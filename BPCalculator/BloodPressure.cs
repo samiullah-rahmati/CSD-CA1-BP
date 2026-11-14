@@ -24,16 +24,39 @@ namespace BPCalculator
         public int Systolic { get; set; }                       // mmHG
 
         [Range(DiastolicMin, DiastolicMax, ErrorMessage = "Invalid Diastolic Value")]
+        
+         // category thresholds (mmHg); lower limits are inclusive
+        public const int HighSystolic = 140;
+        public const int HighDiastolic = 90;
+        public const int PreHighSystolic = 120;
+        public const int PreHighDiastolic = 80;
+        public const int LowSystolic = 90;
+        public const int LowDiastolic = 60;
+        
         public int Diastolic { get; set; }                      // mmHG
 
         // calculate BP category
+                // calculate BP category
         public BPCategory Category
         {
             get
             {
-                // implement as part of project
-                //throw new NotImplementedException("not implemented yet");
-                return new BPCategory();                       // replace this
+                if (Systolic >= HighSystolic || Diastolic >= HighDiastolic)
+                {
+                    return BPCategory.High;
+                }
+
+                if (Systolic >= PreHighSystolic || Diastolic >= PreHighDiastolic)
+                {
+                    return BPCategory.PreHigh;
+                }
+
+                if (Systolic < LowSystolic && Diastolic < LowDiastolic)
+                {
+                    return BPCategory.Low;
+                }
+
+                return BPCategory.Ideal;
             }
         }
     }
